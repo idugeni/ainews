@@ -26,6 +26,7 @@ coverage/
 # Editor directories and files
 .vscode
 .idea/
+.trae
 *.sublime-workspace
 *.sublime-project
 *.code-workspace

@@ -1,5 +1,5 @@
 import { TitleForm } from "@/components/title/title-form"
-import { ApiKeyWarning } from "@/components/api-key-warning"
+import { ApiKeyWarning } from "@/components/api/api-key-warning"
 
 export default function TitlePage() {
   return (

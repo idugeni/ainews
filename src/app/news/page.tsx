@@ -1,5 +1,5 @@
 import { NewsForm } from "@/components/news/news-form"
-import { ApiKeyWarning } from "@/components/api-key-warning"
+import { ApiKeyWarning } from "@/components/api/api-key-warning"
 
 export default function NewsPage() {
   return (
