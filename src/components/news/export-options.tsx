@@ -34,14 +34,14 @@ export function ExportOptions({ content, title }: ExportOptionsProps) {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const downloadAsFile = (content: string, fileType: string) => {
+  const downloadAsFile = async (content: string, fileType: string) => {
     const element = document.createElement("a")
     let fileContent = content
     let mimeType = "text/plain"
     let fileExtension = "txt"
 
     if (fileType === "html") {
-      fileContent = marked.parse(content)
+      fileContent = await marked.parse(content)
       mimeType = "text/html"
       fileExtension = "html"
     } else if (fileType === "markdown") {

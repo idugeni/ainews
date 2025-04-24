@@ -113,6 +113,9 @@ bower_components/
 # Turbopack
 .turbo
 
+# Rules
+.windsurfrules
+
 # SvelteKit build output
 .svelte-kit/
 
@@ -162,3 +165,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+certificates
+mkcert
