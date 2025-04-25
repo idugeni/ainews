@@ -1,4 +1,4 @@
-import type { LucideIcon } from "lucide-react"
+import type { IconType } from "react-icons"
 
 // Model types
 export type GeminiModel = "gemini-2.5-pro-exp-03-25" | "gemini-2.5-flash-preview-04-17"
@@ -13,11 +13,11 @@ export interface ModelOption {
 
 // Category types
 export interface NewsCategory {
-  id: string
-  name: string
-  description: string
-  icon: LucideIcon
-  prompt: string
+  id: string;
+  name: string;
+  description: string;
+  icon: IconType;
+  prompt: string;
 }
 
 // API response types
@@ -28,10 +28,15 @@ export interface ApiResponse<T> {
 }
 
 // Title generation types
+/**
+ * Request body untuk generate judul berita
+ */
 export interface TitleGenerationRequest {
   topic: string
   model: GeminiModel
   category?: string
+  count?: number // jumlah judul yang ingin digenerate
+  // systemInstruction diatur otomatis di backend/prompt builder
 }
 
 // News generation types

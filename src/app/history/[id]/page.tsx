@@ -7,9 +7,9 @@ import { Card } from "@/components/ui/card"
 import { getHistoryItem } from "@/lib/storage"
 import { ArrowLeft, Loader2 } from "lucide-react"
 import { marked } from "marked"
-import { ExportOptions } from "@/components/news/export-options"
-import { WordPressPublish } from "@/components/wordpress/wordpress-publish"
-import { SeoAnalyzer } from "@/components/seo/seo-analyzer"
+import { ExportOptions } from "@/components/news/NewExportOptions"
+import { WordPressPublish } from "@/components/wordpress/WordpressPublish"
+import { SeoAnalyzer } from "@/components/seo/SeoAnalyzer"
 
 // Define a type for the history item
 interface HistoryItem {
@@ -78,7 +78,6 @@ export default function HistoryItemPage({ params }: { params: { id: string } }) 
           <WordPressPublish title={item.title} content={item.content} />
         </div>
       </div>
-
       <Card className="overflow-hidden mb-8">
         <div className="p-6 prose dark:prose-invert max-w-none">
           {parsedContent ? (
@@ -88,10 +87,9 @@ export default function HistoryItemPage({ params }: { params: { id: string } }) 
           )}
         </div>
       </Card>
-
       <div className="mb-8">
         <SeoAnalyzer content={item.content} title={item.title} />
       </div>
     </div>
-  )
+  );
 }

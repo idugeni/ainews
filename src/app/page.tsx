@@ -12,7 +12,6 @@ export default function Home() {
           Create professional news content in seconds with the power of Google Gemini AI
         </p>
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="text-center pb-2">
@@ -60,7 +59,6 @@ export default function Home() {
           </CardContent>
         </Card>
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl">
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="text-center pb-2">
@@ -118,7 +116,6 @@ export default function Home() {
           </CardContent>
         </Card>
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mt-4">
         <Card className="hover:shadow-md transition-shadow">
           <CardHeader className="text-center pb-2">
@@ -151,7 +148,6 @@ export default function Home() {
           </CardContent>
         </Card>
       </div>
-
       <div className="mt-12 text-center max-w-2xl bg-primary/5 p-6 rounded-lg">
         <div className="mx-auto bg-primary/10 p-3 rounded-lg w-16 h-16 flex items-center justify-center mb-4">
           <Sparkles className="h-8 w-8 text-primary" />
@@ -164,5 +160,5 @@ export default function Home() {
         </p>
       </div>
     </div>
-  )
+  );
 }

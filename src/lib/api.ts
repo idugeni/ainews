@@ -4,14 +4,15 @@ export async function generateTitles(
   topic: string,
   model: GeminiModel,
   category?: string,
-): Promise<ApiResponse<ReadableStream<Uint8Array>>> {
+  count?: number,
+): Promise<ApiResponse<{ titles: string[] }>> {
   try {
     const response = await fetch("/api/generate-titles", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ topic, model, category } as TitleGenerationRequest),
+      body: JSON.stringify({ topic, model, category, count } as TitleGenerationRequest),
     })
 
     if (!response.ok) {
@@ -20,16 +21,13 @@ export async function generateTitles(
       throw new Error(errorMessage)
     }
 
-    if (!response.body) {
-      throw new Error("Response body is not readable")
-    }
-
+    // Expect JSON response (non-streaming)
+    const data = await response.json()
     return {
       success: true,
-      data: response.body,
+      data,
     }
   } catch (error) {
-    console.error("API error:", error)
     return {
       success: false,
       error: error instanceof Error ? error.message : String(error),
@@ -41,7 +39,7 @@ export async function generateNews(
   title: string,
   model: GeminiModel,
   category?: string,
-): Promise<ApiResponse<ReadableStream<Uint8Array>>> {
+): Promise<ApiResponse<{ result: string }>> {
   try {
     const response = await fetch("/api/generate-news", {
       method: "POST",
@@ -57,16 +55,13 @@ export async function generateNews(
       throw new Error(errorMessage)
     }
 
-    if (!response.body) {
-      throw new Error("Response body is not readable")
-    }
-
+    // Expect JSON response: { result: string }
+    const data = await response.json()
     return {
       success: true,
-      data: response.body,
+      data,
     }
   } catch (error) {
-    console.error("API error:", error)
     return {
       success: false,
       error: error instanceof Error ? error.message : String(error),

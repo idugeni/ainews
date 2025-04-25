@@ -10,5 +10,5 @@ export default function NotFound() {
         <Button>Return to Home</Button>
       </Link>
     </div>
-  )
+  );
 }

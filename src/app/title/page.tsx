@@ -1,25 +1,28 @@
-import { TitleForm } from "@/components/title/title-form"
-import { ApiKeyWarning } from "@/components/api/api-key-warning"
+import TitleGenerator from "@/components/title/TitleGenerator"
+import { ApiKeyWarning } from "@/components/api/ApiKeyWarning"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 
 export default function TitlePage() {
   return (
-    <div className="max-w-3xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-3">Generate News Titles</h1>
-        <p className="text-muted-foreground">
-          Enter a topic and our AI will generate several news title options for you. Choose the one you like and proceed
-          to create the full article.
-        </p>
-      </div>
-
-      {/* API Key Warning */}
-      {!process.env.GOOGLE_API_KEY && (
-        <div className="mb-8">
-          <ApiKeyWarning />
-        </div>
-      )}
-
-      <TitleForm />
+    <div className="min-h-[80vh] flex items-center justify-center bg-background py-8 px-2">
+      <Card className="w-full max-w-3xl shadow-xl border-border bg-card">
+        <CardHeader>
+          <CardTitle className="text-3xl font-bold text-primary">Generate News Titles</CardTitle>
+          <CardDescription className="text-muted-foreground">
+            Masukkan topik berita, pilih kategori dan model AI, lalu dapatkan beberapa opsi judul berita yang menarik dan siap pakai.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {/* API Key Warning */}
+          {!process.env.GEMINI_API_KEY && (
+            <div className="mb-8">
+              <ApiKeyWarning />
+            </div>
+          )}
+          {/* Hapus TitleForm tanpa props, gunakan TitleGenerator yang benar */}
+          <TitleGenerator />
+        </CardContent>
+      </Card>
     </div>
   )
 }

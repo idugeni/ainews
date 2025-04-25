@@ -21,9 +21,9 @@ export function MegaMenu() {
     <NavigationMenu className="hidden md:flex">
       <NavigationMenuList>
         <NavigationMenuItem>
-          <Link href="/" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>Home</NavigationMenuLink>
-          </Link>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <Link href="/">Home</Link>
+          </NavigationMenuLink>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
@@ -71,7 +71,11 @@ export function MegaMenu() {
           <NavigationMenuContent>
             <div className="grid grid-cols-3 gap-3 p-4 w-[600px]">
               {NEWS_CATEGORIES.map((category) => (
-                <Link key={category.id} href={`/news?category=${category.id}`} className="group">
+                <Link
+                  key={category.id}
+                  href={`/news?category=${category.id}`}
+                  className="group"
+                >
                   <div className="flex flex-col space-y-2 rounded-md p-3 hover:bg-accent transition-colors">
                     <div className="flex items-center gap-2">
                       {category.icon && <category.icon className="h-4 w-4 text-primary" />}
@@ -119,18 +123,14 @@ export function MegaMenu() {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <Link href="/history" legacyBehavior passHref>
-            <NavigationMenuLink
-              className={cn(
+          <NavigationMenuLink asChild className={cn(
                 navigationMenuTriggerStyle(),
                 pathname === "/history" && "bg-accent text-accent-foreground",
-              )}
-            >
-              History
-            </NavigationMenuLink>
-          </Link>
+              )}>
+            <Link href="/history">History</Link>
+          </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
-  )
+  );
 }

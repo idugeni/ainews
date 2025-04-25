@@ -2,7 +2,13 @@ import { Newspaper, Github, Twitter, Mail, Heart, Coffee } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
-export function Footer() {
+/**
+ * Komponen Footer aplikasi News Generator.
+ * Menampilkan informasi, link sosial, dan copyright.
+ *
+ * @returns JSX Footer
+ */
+const Footer = () => {
   const currentYear = new Date().getFullYear()
 
   return (
@@ -18,12 +24,20 @@ export function Footer() {
               Generate professional news titles and content with the power of Google Gemini AI
             </p>
             <div className="flex items-center gap-3">
-              <Link href="https://github.com/yourusername/news-generator" target="_blank" rel="noopener noreferrer">
+              <Link
+                href="https://github.com/idugeni/ainews"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button variant="ghost" size="icon" className="h-9 w-9">
                   <Github className="h-5 w-5" />
                 </Button>
               </Link>
-              <Link href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer">
+              <Link
+                href="https://twitter.com/yourusername"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button variant="ghost" size="icon" className="h-9 w-9">
                   <Twitter className="h-5 w-5" />
                 </Button>
@@ -132,7 +146,7 @@ export function Footer() {
         </div>
 
         <div className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-muted-foreground">© {currentYear} News Generator. All rights reserved.</p>
+          <p className="text-sm text-muted-foreground"> {currentYear} News Generator. All rights reserved.</p>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
             <span>Made with</span>
             <Heart className="h-4 w-4 text-red-500 fill-red-500" />
@@ -144,3 +158,5 @@ export function Footer() {
     </footer>
   )
 }
+
+export default Footer

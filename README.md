@@ -20,7 +20,7 @@ Generate professional news titles and content with the power of Google Gemini AI
 
 1. Clone the repository:
    \`\`\`bash
-   git clone https://github.com/yourusername/news-generator.git
+   git clone https://github.com/idugeni/ainews.git
    cd news-generator
    \`\`\`
 
@@ -31,7 +31,7 @@ Generate professional news titles and content with the power of Google Gemini AI
 
 3. Create a `.env.local` file in the root directory and add your Google Gemini API key:
    \`\`\`
-   GOOGLE_API_KEY=your_api_key_here
+   GEMINI_API_KEY=your_api_key_here
    \`\`\`
 
 4. Start the development server:
@@ -49,7 +49,7 @@ Generate professional news titles and content with the power of Google Gemini AI
 
 ## Environment Variables
 
-- `GOOGLE_API_KEY`: Your Google Gemini API key (required)
+- `GEMINI_API_KEY`: Your Google Gemini API key (required)
 
 ## Technologies Used
 

@@ -1,5 +1,5 @@
-import { NewsForm } from "@/components/news/news-form"
-import { ApiKeyWarning } from "@/components/api/api-key-warning"
+import NewsGenerator from "@/components/news/NewsGenerator"
+import { ApiKeyWarning } from "@/components/api/ApiKeyWarning"
 
 export default function NewsPage() {
   return (
@@ -13,13 +13,13 @@ export default function NewsPage() {
       </div>
 
       {/* API Key Warning */}
-      {!process.env.GOOGLE_API_KEY && (
+      {!process.env.GEMINI_API_KEY && (
         <div className="mb-8">
           <ApiKeyWarning />
         </div>
       )}
 
-      <NewsForm />
+      <NewsGenerator />
     </div>
   )
 }

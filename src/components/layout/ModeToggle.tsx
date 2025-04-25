@@ -5,27 +5,18 @@ import { useTheme } from "next-themes"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { useThemeTransition } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
 
 export function ModeToggle() {
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
-  const { isChanging, setIsChanging } = useThemeTransition()
 
-  // Pastikan tema hanya dirender setelah mounting untuk menghindari hydration mismatch
   useEffect(() => {
     setMounted(true)
   }, [])
 
   const handleThemeChange = (newTheme: string) => {
-    setIsChanging(true)
     setTheme(newTheme)
-
-    // Reset isChanging setelah animasi selesai
-    setTimeout(() => {
-      setIsChanging(false)
-    }, 500)
   }
 
   if (!mounted) {
@@ -42,7 +33,7 @@ export function ModeToggle() {
         <Button
           variant="ghost"
           size="icon"
-          className={cn("transition-all duration-300", isChanging && "animate-pulse")}
+          className="transition-all duration-300"
         >
           {theme === "light" && <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />}
           {theme === "dark" && <Moon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />}

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { NEWS_CATEGORIES } from "@/config/categories"
 import type { NewsCategory } from "@/types"
@@ -9,20 +9,33 @@ import { ChevronDown } from "lucide-react"
 
 interface CategorySelectorProps {
   selectedCategory: NewsCategory
-  onCategoryChange: (category: NewsCategory) => void
+  onCategoryChangeAction: (category: NewsCategory) => void
   disabled?: boolean
 }
 
-export function CategorySelector({ selectedCategory, onCategoryChange, disabled = false }: CategorySelectorProps) {
+export function CategorySelector({ selectedCategory, onCategoryChangeAction, disabled = false }: CategorySelectorProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const handleSelectCategory = (category: NewsCategory) => {
-    onCategoryChange(category)
+    onCategoryChangeAction(category)
     setIsOpen(false)
   }
 
+  // Tutup dropdown jika klik di luar area
+  useEffect(() => {
+    if (!isOpen) return;
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
+
   return (
-    <div className="relative w-full">
+    <div className="relative w-full" ref={containerRef}>
       <Button
         type="button"
         variant="outline"

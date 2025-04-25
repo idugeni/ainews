@@ -9,7 +9,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { cn } from "@/lib/utils"
 import { Menu, FileText, Newspaper, History, Home, Layers, Palette } from "lucide-react"
 import { NEWS_CATEGORIES } from "@/config/categories"
-import { ModeToggle } from "@/components/layout/mode-toggle"
+import { ModeToggle } from "@/components/layout/ModeToggle"
 
 export function MobileMenu() {
   const [open, setOpen] = useState(false)
@@ -33,12 +33,12 @@ export function MobileMenu() {
         <div className="py-4 overflow-y-auto max-h-[calc(100vh-10rem)]">
           <div className="space-y-1 px-2">
             <SheetClose asChild>
-              <Link href="/">
-                <Button variant="ghost" className={cn("w-full justify-start", pathname === "/" && "bg-accent")}>
+              <Button asChild variant="ghost" className={cn("w-full justify-start", pathname === "/" && "bg-accent")}> 
+                <Link href="/">
                   <Home className="mr-2 h-5 w-5" />
                   Home
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </SheetClose>
 
             <Accordion type="single" collapsible className="w-full">
@@ -52,26 +52,26 @@ export function MobileMenu() {
                 <AccordionContent className="pt-1 pb-0">
                   <div className="space-y-1">
                     <SheetClose asChild>
-                      <Link href="/title">
-                        <Button
-                          variant="ghost"
-                          className={cn("w-full justify-start pl-9", pathname === "/title" && "bg-accent")}
-                        >
+                      <Button asChild
+                        variant="ghost"
+                        className={cn("w-full justify-start pl-9", pathname === "/title" && "bg-accent")}
+                      >
+                        <Link href="/title">
                           <FileText className="mr-2 h-4 w-4" />
                           Generate Titles
-                        </Button>
-                      </Link>
+                        </Link>
+                      </Button>
                     </SheetClose>
                     <SheetClose asChild>
-                      <Link href="/news">
-                        <Button
-                          variant="ghost"
-                          className={cn("w-full justify-start pl-9", pathname === "/news" && "bg-accent")}
-                        >
+                      <Button asChild
+                        variant="ghost"
+                        className={cn("w-full justify-start pl-9", pathname === "/news" && "bg-accent")}
+                      >
+                        <Link href="/news">
                           <Newspaper className="mr-2 h-4 w-4" />
                           Generate News
-                        </Button>
-                      </Link>
+                        </Link>
+                      </Button>
                     </SheetClose>
                   </div>
                 </AccordionContent>
@@ -88,12 +88,12 @@ export function MobileMenu() {
                   <div className="space-y-1">
                     {NEWS_CATEGORIES.map((category) => (
                       <SheetClose asChild key={category.id}>
-                        <Link href={`/news?category=${category.id}`}>
-                          <Button variant="ghost" className="w-full justify-start pl-9">
+                        <Button asChild variant="ghost" className="w-full justify-start pl-9">
+                          <Link href={`/news?category=${category.id}`}>
                             {category.icon && <category.icon className="mr-2 h-4 w-4" />}
                             {category.name}
-                          </Button>
-                        </Link>
+                          </Link>
+                        </Button>
                       </SheetClose>
                     ))}
                   </div>
@@ -102,12 +102,12 @@ export function MobileMenu() {
             </Accordion>
 
             <SheetClose asChild>
-              <Link href="/history">
-                <Button variant="ghost" className={cn("w-full justify-start", pathname === "/history" && "bg-accent")}>
+              <Button asChild variant="ghost" className={cn("w-full justify-start", pathname === "/history" && "bg-accent")}> 
+                <Link href="/history">
                   <History className="mr-2 h-5 w-5" />
                   History
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </SheetClose>
           </div>
         </div>
@@ -121,5 +121,5 @@ export function MobileMenu() {
         </div>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

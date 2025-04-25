@@ -1,69 +1,105 @@
-import type { NewsCategory } from "@/types"
-import { Newspaper, Briefcase, Microscope, Gamepad2, Landmark, HeartPulse, Plane, Lightbulb, Leaf } from "lucide-react"
+import type { IconType } from "react-icons"
+import { FiGlobe, FiBriefcase, FiCpu, FiActivity, FiHeart, FiAward, FiFilm, FiBookOpen, FiSmile, FiFlag } from "react-icons/fi"
+
+export interface NewsCategory {
+  id: string
+  name: string
+  description: string
+  icon: IconType // Tipe komponen ikon react-icons
+  prompt: string
+}
 
 export const NEWS_CATEGORIES: NewsCategory[] = [
   {
     id: "general",
-    name: "General News",
-    description: "Breaking news and top stories",
-    icon: Newspaper,
-    prompt: "Write a general news article about",
+    name: "Berita Umum",
+    description: "Berita terkini dan peristiwa utama",
+    icon: FiGlobe,
+    prompt: "Tulis artikel berita umum tentang",
   },
   {
     id: "business",
-    name: "Business",
-    description: "Financial news and market updates",
-    icon: Briefcase,
-    prompt: "Write a business news article about",
+    name: "Bisnis",
+    description: "Update pasar dan ekonomi",
+    icon: FiBriefcase,
+    prompt: "Tulis artikel berita bisnis tentang",
   },
   {
     id: "technology",
-    name: "Technology",
-    description: "Latest tech innovations and updates",
-    icon: Lightbulb,
-    prompt: "Write a technology news article about",
+    name: "Teknologi",
+    description: "Inovasi dan perkembangan teknologi",
+    icon: FiCpu,
+    prompt: "Tulis artikel berita teknologi tentang",
   },
   {
     id: "science",
-    name: "Science",
-    description: "Scientific discoveries and research",
-    icon: Microscope,
-    prompt: "Write a science news article about",
+    name: "Sains",
+    description: "Penemuan ilmiah dan riset",
+    icon: FiActivity,
+    prompt: "Tulis artikel berita sains tentang",
   },
   {
     id: "health",
-    name: "Health",
-    description: "Health news and medical breakthroughs",
-    icon: HeartPulse,
-    prompt: "Write a health news article about",
+    name: "Kesehatan",
+    description: "Berita kesehatan dan medis",
+    icon: FiHeart,
+    prompt: "Tulis artikel berita kesehatan tentang",
+  },
+  {
+    id: "government",
+    name: "Pemerintahan",
+    description: "Berita politik, kebijakan, dan pemerintahan",
+    icon: FiFlag,
+    prompt: "Tulis artikel berita pemerintahan tentang",
+  },
+  {
+    id: "sports",
+    name: "Olahraga",
+    description: "Berita dan hasil olahraga",
+    icon: FiAward,
+    prompt: "Tulis artikel berita olahraga tentang",
   },
   {
     id: "entertainment",
-    name: "Entertainment",
-    description: "Movies, music, and celebrity news",
-    icon: Gamepad2,
-    prompt: "Write an entertainment news article about",
+    name: "Hiburan",
+    description: "Film, musik, dan selebriti",
+    icon: FiFilm,
+    prompt: "Tulis artikel berita hiburan tentang",
   },
   {
-    id: "politics",
-    name: "Politics",
-    description: "Political news and government updates",
-    icon: Landmark,
-    prompt: "Write a political news article about",
+    id: "education",
+    name: "Pendidikan",
+    description: "Info dan perkembangan pendidikan",
+    icon: FiBookOpen,
+    prompt: "Tulis artikel berita pendidikan tentang",
+  },
+  {
+    id: "lifestyle",
+    name: "Gaya Hidup",
+    description: "Tren, tips, dan inspirasi hidup",
+    icon: FiSmile,
+    prompt: "Tulis artikel gaya hidup tentang",
+  },
+  {
+    id: "international",
+    name: "Internasional",
+    description: "Berita dunia dan mancanegara",
+    icon: FiFlag,
+    prompt: "Tulis artikel berita internasional tentang",
   },
   {
     id: "travel",
-    name: "Travel",
-    description: "Travel destinations and tourism news",
-    icon: Plane,
-    prompt: "Write a travel news article about",
+    name: "Travel & Pariwisata",
+    description: "Destinasi wisata dan berita pariwisata",
+    icon: FiGlobe,
+    prompt: "Tulis artikel berita travel atau pariwisata tentang",
   },
   {
     id: "environment",
-    name: "Environment",
-    description: "Climate change and environmental news",
-    icon: Leaf,
-    prompt: "Write an environmental news article about",
+    name: "Lingkungan",
+    description: "Perubahan iklim dan berita lingkungan",
+    icon: FiGlobe,
+    prompt: "Tulis artikel berita lingkungan tentang",
   },
 ]
 

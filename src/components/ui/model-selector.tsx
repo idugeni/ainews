@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Check, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { MODELS } from "@/config/models"
@@ -9,20 +9,33 @@ import { cn } from "@/lib/utils"
 
 interface ModelSelectorProps {
   selectedModel: ModelOption
-  onModelChange: (model: ModelOption) => void
+  onModelChangeAction: (model: ModelOption) => void
   disabled?: boolean
 }
 
-export function ModelSelector({ selectedModel, onModelChange, disabled = false }: ModelSelectorProps) {
+export function ModelSelector({ selectedModel, onModelChangeAction, disabled = false }: ModelSelectorProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const handleSelectModel = (model: ModelOption) => {
-    onModelChange(model)
+    onModelChangeAction(model)
     setIsOpen(false)
   }
 
+  // Tutup dropdown jika klik di luar area
+  useEffect(() => {
+    if (!isOpen) return;
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
+
   return (
-    <div className="relative w-full">
+    <div className="relative w-full" ref={containerRef}>
       <Button
         type="button"
         variant="outline"
@@ -42,10 +55,11 @@ export function ModelSelector({ selectedModel, onModelChange, disabled = false }
                 key={model.id}
                 type="button"
                 className={cn(
-                  "flex w-full items-center px-4 py-2 text-left text-sm hover:bg-accent",
-                  selectedModel.id === model.id ? "bg-accent/50" : "",
+                  "flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm hover:bg-accent focus:bg-accent focus:outline-none",
+                  selectedModel.id === model.id && "bg-accent text-primary"
                 )}
                 onClick={() => handleSelectModel(model)}
+                disabled={disabled}
               >
                 <div className="flex flex-1 items-start">
                   <div className="flex flex-col">
