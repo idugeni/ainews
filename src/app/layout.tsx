@@ -10,8 +10,13 @@ import { Toaster } from "sonner"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "News Generator with Google Gemini AI",
-  description: "Generate news titles and content with Google Gemini AI",
+  title: {
+    default: "AINEWS - Generator Judul & Berita AI",
+    template: "%s | AINEWS"
+  },
+  description: "Aplikasi AI untuk membuat judul dan berita secara otomatis, cepat, dan relevan.",
+  keywords: ["AI", "berita", "generator", "judul", "news", "otomatis", "Indonesia"],
+  authors: [{ name: "AINEWS Team" }]
 }
 
 export default function RootLayout({

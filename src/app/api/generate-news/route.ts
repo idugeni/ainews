@@ -3,8 +3,8 @@ import { type NextRequest, NextResponse } from "next/server"
 import { withTimeout, DEFAULT_TIMEOUT_MS } from "@/lib/timeout"
 import type { NewsGenerationRequest } from "@/types"
 import { buildNewsPrompt } from "@/lib/news/newsPromptBuilder"
-import { GEMINI_DEFAULT_CONFIG } from "@/config/news/gemini-config"
-import { NEWS_CATEGORIES } from "@/config/categories"
+import { GEMINI_DEFAULT_CONFIG } from "@/config/news/GeminiConfig"
+import { NEWS_CATEGORIES } from "@/config/Categories"
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Title is required" }, { status: 400 })
     }
 
-    const apiKey = process.env.GEMINI_API_KEY
+    const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY
     if (!apiKey) {
       return NextResponse.json({ error: "Google API key is not configured" }, { status: 500 })
     }

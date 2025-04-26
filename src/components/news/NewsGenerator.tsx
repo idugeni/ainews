@@ -6,8 +6,8 @@
  * @module NewsGenerator
  */
 import React, { useState, useEffect, useCallback, useMemo } from "react"
-import { DEFAULT_MODEL } from "@/config/models"
-import { DEFAULT_CATEGORY, NEWS_CATEGORIES } from "@/config/categories"
+import { DEFAULT_MODEL } from "@/config/Models"
+import { DEFAULT_CATEGORY, NEWS_CATEGORIES } from "@/config/Categories"
 import type { ModelOption, NewsCategory, NewsStyle, NewsAudience, NewsTone } from "@/types"
 import { useSearchParams } from "next/navigation"
 import { generateNews } from "@/lib/api"
@@ -17,7 +17,7 @@ import { saveToHistory } from "@/lib/storage"
 import { v4 as uuidv4 } from "uuid"
 import { NewsForm } from "@/components/news/NewsForm"
 import { buildNewsPrompt } from "@/lib/news/newsPromptBuilder"
-import { HistoryList } from "@/components/history/history-list"
+import { HistoryList } from "@/components/history/HistoryList"
 import { FiX } from "react-icons/fi"
 
 const DEFAULT_STYLE: NewsStyle = "Lugas (Straight News)"

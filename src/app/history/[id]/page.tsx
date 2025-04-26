@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
@@ -14,6 +14,7 @@ import { SeoAnalyzer } from "@/components/seo/SeoAnalyzer"
 // Define a type for the history item
 interface HistoryItem {
   title: string;
+  description: string;
   content: string;
   [key: string]: string | number | boolean | null | undefined;
 }
@@ -26,41 +27,31 @@ export default function HistoryItemPage({ params }: { params: { id: string } }) 
 
   useEffect(() => {
     if (params.id) {
+      setIsLoading(true)
       const historyItem = getHistoryItem(params.id) as HistoryItem | null
       setItem(historyItem)
 
       if (historyItem?.content) {
-        try {
-          const parsed = marked.parse(historyItem.content)
-          setParsedContent(parsed as string)
-        } catch {
-          setParsedContent(historyItem.content as string)
-        }
+        const parsed = marked.parse(historyItem.content) as string;
+        setParsedContent(parsed)
       }
-
       setIsLoading(false)
     }
   }, [params.id])
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="flex justify-center items-center min-h-[40vh]">
+        <Loader2 className="animate-spin w-8 h-8 text-muted-foreground" />
       </div>
     )
   }
 
   if (!item) {
     return (
-      <div className="max-w-3xl mx-auto text-center py-12">
-        <h2 className="text-2xl font-bold mb-4">Item Not Found</h2>
-        <p className="text-muted-foreground mb-6">
-          The history item you&#39;re looking for doesn&#39;t exist or has been deleted.
-        </p>
-        <Button onClick={() => router.push("/history")}>
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to History
-        </Button>
+      <div className="flex flex-col items-center justify-center min-h-[40vh] text-center">
+        <p className="text-lg text-muted-foreground mb-4">History item not found.</p>
+        <Button variant="ghost" onClick={() => router.push("/history")}> <ArrowLeft className="mr-2 h-4 w-4" /> Back to History </Button>
       </div>
     )
   }
@@ -68,11 +59,7 @@ export default function HistoryItemPage({ params }: { params: { id: string } }) 
   return (
     <div className="max-w-3xl mx-auto">
       <div className="mb-6 flex items-center justify-between">
-        <Button variant="ghost" onClick={() => router.push("/history")}>
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to History
-        </Button>
-
+        <Button variant="ghost" onClick={() => router.push("/history")}> <ArrowLeft className="mr-2 h-4 w-4" /> Back to History </Button>
         <div className="flex items-center gap-2">
           <ExportOptions content={item.content} title={item.title || "news-content"} />
           <WordPressPublish title={item.title} content={item.content} />
@@ -81,9 +68,9 @@ export default function HistoryItemPage({ params }: { params: { id: string } }) 
       <Card className="overflow-hidden mb-8">
         <div className="p-6 prose dark:prose-invert max-w-none">
           {parsedContent ? (
-            <div dangerouslySetInnerHTML={{ __html: (parsedContent as string).replace(/'/g, "&#39;") }} />
+            <div dangerouslySetInnerHTML={{ __html: parsedContent.replace(/'/g, "&#39;") }} />
           ) : (
-            <div className="whitespace-pre-wrap">{((item && item.content) ? (item.content as string).replace(/'/g, "&#39;") : "")}</div>
+            <div className="whitespace-pre-wrap">{(item && item.content) ? (item.content as string).replace(/'/g, "&#39;") : ""}</div>
           )}
         </div>
       </Card>
@@ -91,5 +78,5 @@ export default function HistoryItemPage({ params }: { params: { id: string } }) 
         <SeoAnalyzer content={item.content} title={item.title} />
       </div>
     </div>
-  );
+  )
 }

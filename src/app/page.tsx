@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import Link from "next/link"
-import { FileText, Newspaper, ArrowRight, History, Download, Globe, Sparkles, Search, Lightbulb } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
+import { FileText, Newspaper, ArrowRight, History, Download, Globe, Sparkles, Search, Lightbulb } from "lucide-react";
 
 export default function Home() {
   return (
@@ -18,8 +18,8 @@ export default function Home() {
             <div className="mx-auto bg-primary/10 p-3 rounded-lg w-16 h-16 flex items-center justify-center mb-3">
               <FileText className="h-8 w-8 text-primary" />
             </div>
-            <CardTitle>Generate News Titles</CardTitle>
-            <CardDescription className="text-center">Create engaging headlines for any topic</CardDescription>
+            <CardTitle className="mb-1">Generate News Titles</CardTitle>
+            <CardDescription className="text-center mb-4">Create engaging headlines for any topic</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center pt-2">
             <p className="text-sm text-muted-foreground mb-4 text-center">
@@ -41,8 +41,8 @@ export default function Home() {
             <div className="mx-auto bg-primary/10 p-3 rounded-lg w-16 h-16 flex items-center justify-center mb-3">
               <Newspaper className="h-8 w-8 text-primary" />
             </div>
-            <CardTitle>Generate News Content</CardTitle>
-            <CardDescription className="text-center">Create complete, well-structured articles</CardDescription>
+            <CardTitle className="mb-1">Generate News Content</CardTitle>
+            <CardDescription className="text-center mb-4">Create complete, well-structured articles</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center pt-2">
             <p className="text-sm text-muted-foreground mb-4 text-center">

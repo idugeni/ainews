@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { cn } from "@/lib/utils"
 import { Menu, FileText, Newspaper, History, Home, Layers, Palette } from "lucide-react"
-import { NEWS_CATEGORIES } from "@/config/categories"
+import { NEWS_CATEGORIES } from "@/config/Categories"
 import { ModeToggle } from "@/components/layout/ModeToggle"
 
 export function MobileMenu() {

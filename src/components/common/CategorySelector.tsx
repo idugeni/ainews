@@ -1,24 +1,24 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { Check, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { MODELS } from "@/config/models"
-import type { ModelOption } from "@/types"
+import { NEWS_CATEGORIES } from "@/config/Categories"
+import type { NewsCategory } from "@/types"
 import { cn } from "@/lib/utils"
+import { ChevronDown } from "lucide-react"
 
-interface ModelSelectorProps {
-  selectedModel: ModelOption
-  onModelChangeAction: (model: ModelOption) => void
+interface CategorySelectorProps {
+  selectedCategory: NewsCategory
+  onCategoryChangeAction: (category: NewsCategory) => void
   disabled?: boolean
 }
 
-export function ModelSelector({ selectedModel, onModelChangeAction, disabled = false }: ModelSelectorProps) {
+export function CategorySelector({ selectedCategory, onCategoryChangeAction, disabled = false }: CategorySelectorProps) {
   const [isOpen, setIsOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const handleSelectModel = (model: ModelOption) => {
-    onModelChangeAction(model)
+  const handleSelectCategory = (category: NewsCategory) => {
+    onCategoryChangeAction(category)
     setIsOpen(false)
   }
 
@@ -43,36 +43,33 @@ export function ModelSelector({ selectedModel, onModelChangeAction, disabled = f
         onClick={() => setIsOpen(!isOpen)}
         disabled={disabled}
       >
-        <span>{selectedModel.name}</span>
+        <span className="flex items-center">
+          {selectedCategory.icon && <selectedCategory.icon className="mr-2 h-4 w-4" />}
+          {selectedCategory.name}
+        </span>
         <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>
 
       {isOpen && (
         <div className="absolute z-10 mt-1 w-full rounded-md border bg-popover shadow-lg">
-          <div className="py-1">
-            {MODELS.map((model) => (
+          <div className="py-1 max-h-60 overflow-auto">
+            {NEWS_CATEGORIES.map((category) => (
               <button
-                key={model.id}
+                key={category.id}
                 type="button"
                 className={cn(
-                  "flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm hover:bg-accent focus:bg-accent focus:outline-none",
-                  selectedModel.id === model.id && "bg-accent text-primary"
+                  "flex w-full items-center px-4 py-2 text-left text-sm hover:bg-accent",
+                  selectedCategory.id === category.id ? "bg-accent/50" : "",
                 )}
-                onClick={() => handleSelectModel(model)}
-                disabled={disabled}
+                onClick={() => handleSelectCategory(category)}
               >
-                <div className="flex flex-1 items-start">
+                <div className="flex items-center">
+                  {category.icon && <category.icon className="mr-2 h-4 w-4" />}
                   <div className="flex flex-col">
-                    <span>{model.name}</span>
-                    <span className="text-xs text-muted-foreground">{model.description}</span>
+                    <span>{category.name}</span>
+                    <span className="text-xs text-muted-foreground">{category.description}</span>
                   </div>
                 </div>
-                {selectedModel.id === model.id && <Check className="ml-2 h-4 w-4" />}
-                {model.isRecommended && (
-                  <span className="ml-auto text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
-                    Recommended
-                  </span>
-                )}
               </button>
             ))}
           </div>

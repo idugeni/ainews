@@ -1,38 +1,36 @@
 "use client"
 
-import type React from "react"
-import { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ModelSelector } from "@/components/ui/model-selector"
-import { CategorySelector } from "@/components/ui/category-selector"
-import type { ModelOption, NewsCategory } from "@/types"
-import { DEFAULT_MODEL } from "@/config/models"
-import { DEFAULT_CATEGORY } from "@/config/categories"
-import { generateTitles } from "@/lib/api"
-import { toast } from "sonner"
-import { saveToHistory } from "@/lib/storage"
-import { v4 as uuidv4 } from "uuid"
-import { TitleResultList } from "@/components/title/TitleResultList"
-import { HistoryList } from "@/components/history/history-list"
-import { FiLoader } from "react-icons/fi"
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { Card } from "@/components/ui/card"
+import TitlePromptPreview from "@/components/title/TitlePromptPreview";
+import TitleFormFields from "@/components/title/TitleFormFields";
+import type { ModelOption, NewsCategory } from "@/types";
+import { DEFAULT_MODEL } from "@/config/Models";
+import { DEFAULT_CATEGORY } from "@/config/Categories";
+import { TitleResultList } from "@/components/title/TitleResultList";
+import { HistoryList } from "@/components/history/HistoryList";
+import { generateTitles } from "@/lib/api";
+import { saveToHistory } from "@/lib/storage";
+import { v4 as uuidv4 } from "uuid";
+import { toast } from "sonner";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { FiLoader } from "react-icons/fi";
 
 interface TitleFormProps {
   topic: string;
   setTopicAction: (v: string) => void;
   count: number;
   setCountAction: (v: number) => void;
-  selectedModel: ModelOption;
-  setSelectedModelAction: (v: ModelOption) => void;
-  selectedCategory: NewsCategory;
-  setSelectedCategoryAction: (v: NewsCategory) => void;
   isGenerating: boolean;
   onSubmitAction: () => void;
   onShowHistoryAction: () => void;
   promptPreview?: string;
+  selectedCategory: NewsCategory;
+  setSelectedCategoryAction: (category: NewsCategory) => void;
+  selectedModel: ModelOption;
+  setSelectedModelAction: (model: ModelOption) => void;
 }
 
 export function TitleForm({
@@ -40,15 +38,32 @@ export function TitleForm({
   setTopicAction,
   count,
   setCountAction,
-  selectedModel,
-  setSelectedModelAction,
-  selectedCategory,
-  setSelectedCategoryAction,
   isGenerating,
   onSubmitAction,
   onShowHistoryAction,
-  promptPreview
+  promptPreview,
+  selectedCategory,
+  setSelectedCategoryAction,
+  selectedModel,
+  setSelectedModelAction,
 }: TitleFormProps) {
+  const [showTimer, setShowTimer] = useState(false);
+  const [timer, setTimer] = useState(0);
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+    if (isGenerating) {
+      const startTime = Date.now();
+      intervalId = setInterval(() => {
+        setTimer(Math.floor((Date.now() - startTime) / 1000));
+      }, 1000);
+    } else {
+      setShowTimer(false);
+      setTimer(0);
+    }
+    return () => clearInterval(intervalId);
+  }, [isGenerating]);
+
   return (
     <Card className="space-y-6 relative p-6">
       <div className="flex justify-end mb-4">
@@ -65,7 +80,7 @@ export function TitleForm({
       </div>
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-2">Generate News Titles</h1>
-        <p className="text-muted-foreground mb-0">
+        <p className="text-muted-foreground">
           Masukkan topik berita, pilih kategori dan model AI, lalu dapatkan beberapa opsi judul berita yang menarik dan siap pakai.
         </p>
       </div>
@@ -76,85 +91,44 @@ export function TitleForm({
         }}
         className="space-y-4"
       >
-        {/* Topik */}
-        <div className="mb-4">
-          <label htmlFor="topic" className="text-sm font-medium">Topik Berita <span className="text-red-600">*</span></label>
-          <Input
-            id="topic"
-            type="text"
-            value={topic}
-            onChange={e => setTopicAction(e.target.value)}
-            placeholder="Contoh: Teknologi AI di Indonesia, Ekonomi Syariah, Startup Kesehatan Digital, dll."
-            disabled={isGenerating}
-            className="mb-1"
-            autoFocus
-          />
-          {/* Error topik jika ada (tambahkan jika validasi ada) */}
-        </div>
-        <p className="text-xs text-muted-foreground mb-2">Tulis topik utama yang ingin dijadikan judul berita. Semakin spesifik, hasil judul akan semakin relevan.</p>
-
-        {/* Jumlah Judul */}
-        <div className="mb-4">
-          <label htmlFor="count-select" className="text-sm font-medium">Jumlah Judul</label>
-          <Select
-            value={String(count)}
-            onValueChange={v => setCountAction(Number(v))}
-            disabled={isGenerating}
-          >
-            <SelectTrigger id="count-select" className="w-full">
-              <SelectValue placeholder="Pilih jumlah judul" />
-            </SelectTrigger>
-            <SelectContent>
-              {[3,4,5,6,7,8,9,10].map(val => (
-                <SelectItem key={val} value={String(val)}>{val}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <p className="text-xs text-muted-foreground mb-2">Pilih berapa banyak alternatif judul berita yang ingin dihasilkan.</p>
-
-        {/* Model AI */}
-        <div className="mb-4">
-          <label htmlFor="model-selector" className="text-sm font-medium">Model AI</label>
-          <ModelSelector
-            selectedModel={selectedModel || DEFAULT_MODEL}
-            onModelChangeAction={setSelectedModelAction}
-            disabled={isGenerating}
-          />
-        </div>
-        <p className="text-xs text-muted-foreground mb-2">Pilih model AI yang digunakan untuk menghasilkan judul. Model berbeda bisa memberi variasi gaya penulisan.</p>
-
-        {/* Kategori */}
-        <div className="mb-4">
-          <label htmlFor="category-selector" className="text-sm font-medium">Kategori Berita</label>
-          <CategorySelector
-            selectedCategory={selectedCategory}
-            onCategoryChangeAction={setSelectedCategoryAction}
-            disabled={isGenerating}
-          />
-        </div>
-        <p className="text-xs text-muted-foreground mb-2">Pilih kategori berita agar judul yang dihasilkan lebih relevan.</p>
-
+        <TitleFormFields
+          topic={topic}
+          setTopicAction={setTopicAction}
+          count={count}
+          setCountAction={setCountAction}
+          isGenerating={isGenerating}
+          selectedCategory={selectedCategory}
+          setSelectedCategoryAction={setSelectedCategoryAction}
+          selectedModel={selectedModel}
+          setSelectedModelAction={setSelectedModelAction}
+        />
         <Button
           type="submit"
           disabled={isGenerating || !topic.trim()}
-          className="w-full transition-all duration-200 hover:shadow-md"
+          className="w-full transition-all duration-200 hover:shadow-md mt-4"
           aria-busy={isGenerating}
+          onClick={() => {
+            if (!isGenerating && topic.trim()) setShowTimer(true);
+          }}
         >
           {isGenerating ? (
             <span className="flex items-center justify-center gap-2">
-              <FiLoader className="animate-spin h-5 w-5 text-muted-foreground opacity-100" />
+              <FiLoader className="animate-spin h-5 w-5" />
               Membuat Judul...
             </span>
           ) : (
             "Buat Judul"
           )}
         </Button>
-        {promptPreview && (
-          <Card className="mt-4 px-4 py-3 text-xs font-mono whitespace-pre-wrap text-muted-foreground border border-border">
-            <span className="font-semibold text-primary">Preview Prompt ke AI:</span>\n{promptPreview}
-          </Card>
+        {showTimer && (
+          <Alert className="mt-4">
+            <AlertTitle>{isGenerating ? "Sedang membuat judul..." : "Judul berhasil dibuat!"}</AlertTitle>
+            <AlertDescription>
+              Waktu proses: {timer} detik
+            </AlertDescription>
+          </Alert>
         )}
+        <TitlePromptPreview prompt={promptPreview || ""} />
       </form>
     </Card>
   );
@@ -165,8 +139,8 @@ export function TitleGenerator() {
   const [count, setCount] = useState(5)
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedTitles, setGeneratedTitles] = useState<string[]>([])
-  const [selectedModel, setSelectedModel] = useState(DEFAULT_MODEL)
-  const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY)
+  const [selectedModel, setSelectedModel] = useState<ModelOption>(DEFAULT_MODEL)
+  const [selectedCategory, setSelectedCategory] = useState<NewsCategory>(DEFAULT_CATEGORY)
   const router = useRouter()
   const [showHistory, setShowHistory] = useState(false)
 
@@ -249,14 +223,14 @@ export function TitleGenerator() {
         setTopicAction={setTopic}
         count={count}
         setCountAction={setCount}
-        selectedModel={selectedModel}
-        setSelectedModelAction={setSelectedModel}
-        selectedCategory={selectedCategory}
-        setSelectedCategoryAction={setSelectedCategory}
         isGenerating={isGenerating}
         onSubmitAction={handleSubmit}
         onShowHistoryAction={() => setShowHistory(true)}
         promptPreview={`Generate ${count} judul berita tentang "${topic}" dengan model "${selectedModel.name}" dan kategori "${selectedCategory.name}".`}
+        selectedCategory={selectedCategory}
+        setSelectedCategoryAction={setSelectedCategory}
+        selectedModel={selectedModel}
+        setSelectedModelAction={setSelectedModel}
       />
       {(generatedTitles.length > 0) && (
         <div className="mt-8">

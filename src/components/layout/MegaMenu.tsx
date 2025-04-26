@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
 import { FileText, Newspaper, History, Settings } from "lucide-react"
-import { NEWS_CATEGORIES } from "@/config/categories"
+import { NEWS_CATEGORIES } from "@/config/Categories"
 
 export function MegaMenu() {
   const pathname = usePathname()

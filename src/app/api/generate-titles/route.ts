@@ -1,8 +1,8 @@
 import { GoogleGenAI } from "@google/genai"
 import { type NextRequest } from "next/server"
 import type { TitleGenerationRequest } from "@/types"
-import { NEWS_CATEGORIES } from "@/config/categories"
-import { GEMINI_DEFAULT_CONFIG } from "@/config/titles/gemini-config"
+import { NEWS_CATEGORIES } from "@/config/Categories"
+import { GEMINI_DEFAULT_CONFIG } from "@/config/titles/GeminiConfig"
 import { buildTitlePrompt } from "@/lib/titles/titlePromptBuilder"
 import { withRetry, DEFAULT_TIMEOUT_MS, withTimeout } from "@/lib/timeout"
 
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
       return new Response("Topic is required", { status: 400 })
     }
 
-    const apiKey = process.env.GEMINI_API_KEY
+    const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY
     if (!apiKey) {
       return new Response("Google API key is not configured", { status: 500 })
     }

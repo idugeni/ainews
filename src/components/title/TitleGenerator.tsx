@@ -3,13 +3,13 @@
 import React, { useState } from "react";
 import { TitleForm } from "@/components/title/TitleForm";
 import { TitleResultList } from "@/components/title/TitleResultList";
-import { DEFAULT_MODEL } from "@/config/models";
-import { DEFAULT_CATEGORY } from "@/config/categories";
+import { DEFAULT_MODEL } from "@/config/Models";
+import { DEFAULT_CATEGORY } from "@/config/Categories";
 import { generateTitles } from "@/lib/api";
 import { saveToHistory } from "@/lib/storage";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "sonner";
-import { HistoryList } from "@/components/history/history-list";
+import { HistoryList } from "@/components/history/HistoryList";
 import { buildTitlePrompt } from "@/lib/titles/titlePromptBuilder";
 import { FiX } from "react-icons/fi";
 

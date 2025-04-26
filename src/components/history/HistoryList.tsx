@@ -18,8 +18,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { HistoryTitleCard } from "@/components/history/history-title-card"
-import { HistoryNewsCard } from "@/components/history/history-news-card"
+import { HistoryTitleCard } from "@/components/history/HistoryTitleCard"
+import { HistoryNewsCard } from "@/components/history/HistoryNewsCard"
 import { Trash2, FileText, Newspaper, History, RefreshCw } from "lucide-react"
 
 export function HistoryList({ showDeleteAtBottom = false }: { showDeleteAtBottom?: boolean } = {}) {
