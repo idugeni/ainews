@@ -16,9 +16,8 @@ import { marked } from "marked"
 import { saveToHistory } from "@/lib/storage"
 import { v4 as uuidv4 } from "uuid"
 import { NewsForm } from "@/components/news/NewsForm"
-import { buildNewsPrompt } from "@/lib/news/newsPromptBuilder"
+import { buildNewsPrompt } from "@/lib/prompt/newsPromptBuilder"
 import { HistoryList } from "@/components/history/HistoryList"
-import { FiX } from "react-icons/fi"
 
 const DEFAULT_STYLE: NewsStyle = "Lugas (Straight News)"
 const DEFAULT_AUDIENCE: NewsAudience = "Umum"
@@ -42,11 +41,14 @@ export default function NewsGenerator() {
   const [showHistory, setShowHistory] = useState(false)
   const searchParams = useSearchParams()
 
-  // --- Effect: Ambil param dari URL jika ada ---
+  // --- Handler: gunakan judul dari history via query param ---
   useEffect(() => {
+    // Jika title dari URL kosong, jangan set
     const titleFromParams = searchParams.get("title")
+    if (typeof titleFromParams === "string" && titleFromParams.trim()) {
+      setTitle(titleFromParams)
+    }
     const categoryFromParams = searchParams.get("category")
-    if (titleFromParams) setTitle(titleFromParams)
     if (categoryFromParams) {
       const category = NEWS_CATEGORIES.find((c) => c.id === categoryFromParams)
       if (category) setSelectedCategory(category)
@@ -86,12 +88,18 @@ export default function NewsGenerator() {
   }, [title, style, audience, tone])
 
   // --- Prompt builder utama ---
-  const prompt = buildNewsPrompt(
-    title,
-    selectedCategory?.name || "-",
-    style,
-    audience,
-    tone
+  const prompt = useMemo(
+    () =>
+      title && title.trim()
+        ? buildNewsPrompt(
+            title,
+            selectedCategory?.name || "-",
+            style,
+            audience,
+            tone
+          )
+        : { prompt: "" },
+    [title, selectedCategory, style, audience, tone]
   )
 
   // --- Handler Form ---
@@ -122,6 +130,11 @@ export default function NewsGenerator() {
 
   const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    // Validasi: judul harus ada, baik dari input maupun dari history
+    if (!title || !title.trim()) {
+      setErrors((prev) => ({ ...prev, title: "Judul berita wajib diisi" }))
+      return
+    }
     if (!validate()) return
     setIsGenerating(true)
     setGeneratedContent("")
@@ -175,21 +188,14 @@ export default function NewsGenerator() {
         parsedContent={parsedContent}
         showGeneratedContent={showGeneratedContent}
         errors={errors}
-        prompt={prompt}
+        prompt={prompt.prompt}
         onShowHistoryAction={() => setShowHistory(true)}
       />
       {showHistory && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" role="dialog" onClick={() => setShowHistory(false)}>
           <div className="bg-card rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto relative p-4 border border-border" onClick={e => e.stopPropagation()}>
-            <button
-              type="button"
-              className="absolute right-2 top-2 text-xl text-muted-foreground hover:text-primary"
-              onClick={() => setShowHistory(false)}
-              aria-label="Tutup riwayat"
-            >
-              <FiX className="w-6 h-6" />
-            </button>
-            <HistoryList showDeleteAtBottom />
+            {/* Hapus tombol close, pengguna cukup klik area luar untuk menutup */}
+            <HistoryList />
           </div>
         </div>
       )}

@@ -20,9 +20,9 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HistoryTitleCard } from "@/components/history/HistoryTitleCard"
 import { HistoryNewsCard } from "@/components/history/HistoryNewsCard"
-import { Trash2, FileText, Newspaper, History, RefreshCw } from "lucide-react"
+import { Trash2, FileText, Newspaper, RefreshCw } from "lucide-react"
 
-export function HistoryList({ showDeleteAtBottom = false }: { showDeleteAtBottom?: boolean } = {}) {
+export function HistoryList() {
   const [history, setHistory] = useState<HistoryItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<'all' | 'titles' | 'news'>('all')
@@ -112,9 +112,7 @@ export function HistoryList({ showDeleteAtBottom = false }: { showDeleteAtBottom
   if (history.length === 0) {
     return (
       <div className="text-center py-16 animate-fade-in">
-        <History className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-        <h3 className="text-2xl font-bold mb-1">Belum Ada Riwayat</h3>
-        <p className="text-muted-foreground mb-8">Judul & berita yang Anda buat akan muncul di sini.</p>
+        <FileText className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
         <div className="flex justify-center gap-4">
           <Button onClick={() => router.push("/title")}>
             <FileText className="mr-2 h-5 w-5" />Buat Judul
@@ -129,34 +127,6 @@ export function HistoryList({ showDeleteAtBottom = false }: { showDeleteAtBottom
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2 md:gap-0">
-        <div>
-          <h2 className="text-2xl font-bold mb-1">Riwayat Anda</h2>
-          <p className="text-muted-foreground text-sm">Semua judul dan berita yang pernah Anda buat.</p>
-        </div>
-        {!showDeleteAtBottom && (
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="destructive" size="sm">
-                <Trash2 className="h-4 w-4 mr-2" />
-                Hapus Seluruh Riwayat
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Yakin hapus semua riwayat?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Tindakan ini tidak dapat dibatalkan. Semua riwayat akan dihapus permanen.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Batal</AlertDialogCancel>
-                <AlertDialogAction onClick={handleClearHistory}>Hapus</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        )}
-      </div>
       <Tabs defaultValue="all" className="w-full animate-fade-in" onValueChange={(tab) => setActiveTab(tab as 'all' | 'titles' | 'news')}>
         <TabsList className="mb-4 gap-2 w-full flex">
           <TabsTrigger value="all" className="flex-1 justify-center">
@@ -219,8 +189,8 @@ export function HistoryList({ showDeleteAtBottom = false }: { showDeleteAtBottom
           )}
         </TabsContent>
       </Tabs>
-      <div className="flex flex-wrap gap-2 justify-center">
-        {activeTab === 'all' && history.length > 0 && !showDeleteAtBottom && (
+      {(activeTab === 'all' && history.length > 0) && (
+        <div className="mt-8 flex justify-center">
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive" size="sm">
@@ -238,8 +208,10 @@ export function HistoryList({ showDeleteAtBottom = false }: { showDeleteAtBottom
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-        )}
-        {activeTab === 'titles' && titleHistory.length > 0 && (
+        </div>
+      )}
+      {(activeTab === 'titles' && titleHistory.length > 0) && (
+        <div className="mt-8 flex justify-center">
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive" size="sm">
@@ -257,8 +229,10 @@ export function HistoryList({ showDeleteAtBottom = false }: { showDeleteAtBottom
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-        )}
-        {activeTab === 'news' && newsHistory.length > 0 && (
+        </div>
+      )}
+      {(activeTab === 'news' && newsHistory.length > 0) && (
+        <div className="mt-8 flex justify-center">
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive" size="sm">
@@ -273,27 +247,6 @@ export function HistoryList({ showDeleteAtBottom = false }: { showDeleteAtBottom
               <AlertDialogFooter>
                 <AlertDialogCancel>Batal</AlertDialogCancel>
                 <AlertDialogAction onClick={handleClearNewsHistory}>Hapus</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        )}
-      </div>
-      {showDeleteAtBottom && activeTab === 'all' && history.length > 0 && (
-        <div className="flex justify-center">
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="destructive" size="sm">
-                <Trash2 className="h-4 w-4 mr-2" />Hapus Seluruh Riwayat
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Yakin hapus semua riwayat?</AlertDialogTitle>
-                <AlertDialogDescription>Tindakan ini tidak dapat dibatalkan. Semua judul & berita akan dihapus permanen.</AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Batal</AlertDialogCancel>
-                <AlertDialogAction onClick={handleClearHistory}>Hapus</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

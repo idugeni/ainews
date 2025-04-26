@@ -17,7 +17,7 @@ export function ApiKeyWarning() {
     try {
       // Dalam aplikasi produksi, Anda harus menyimpan API key dengan aman
       // Ini hanya contoh sederhana untuk demo
-      localStorage.setItem("GEMINI_API_KEY", apiKey)
+      localStorage.setItem("NEXT_PUBLIC_GEMINI_API_KEY", apiKey)
       alert("API key saved! Please reload the page.")
       window.location.reload()
     } catch (error) {

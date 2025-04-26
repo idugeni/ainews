@@ -31,7 +31,7 @@ Generate professional news titles and content with the power of Google Gemini AI
 
 3. Create a `.env.local` file in the root directory and add your Google Gemini API key:
    \`\`\`
-   GEMINI_API_KEY=your_api_key_here
+   NEXT_PUBLIC_GEMINI_API_KEY=your_api_key_here
    \`\`\`
 
 4. Start the development server:
@@ -49,7 +49,7 @@ Generate professional news titles and content with the power of Google Gemini AI
 
 ## Environment Variables
 
-- `GEMINI_API_KEY`: Your Google Gemini API key (required)
+- `NEXT_PUBLIC_GEMINI_API_KEY`: Your Google Gemini API key (required)
 
 ## Technologies Used
 

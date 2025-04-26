@@ -30,12 +30,18 @@ const EXPANDED_HEIGHT = '1000px';
 const NewsPromptPreview: React.FC<NewsPromptPreviewProps> = ({ prompt }) => {
   const [expanded, setExpanded] = useState(false);
 
+  if (!prompt.trim()) return null; // Sembunyikan preview jika prompt kosong
+
   const lines = prompt.split("\n");
   const isCollapsible = lines.length > MAX_VISIBLE_LINES;
 
+  // Point 6: Hitung meta info
+  const charCount = prompt.length;
+  const lineCount = lines.length;
+
   return (
     <Card
-      className="bg-neutral-900/90 border rounded p-0 mt-2 shadow-lg relative overflow-hidden cursor-pointer group"
+      className="bg-neutral-900/90 rounded p-0 mt-2 shadow-lg relative overflow-hidden cursor-pointer group transition-all duration-300"
       onClick={() => setExpanded(e => !e)}
       tabIndex={0}
       role="button"
@@ -43,7 +49,7 @@ const NewsPromptPreview: React.FC<NewsPromptPreviewProps> = ({ prompt }) => {
       style={{ transition: 'box-shadow 0.2s' }}
     >
       <pre
-        className="font-mono text-xs text-neutral-100 whitespace-pre-wrap px-4 pb-4 pt-1 relative transition-all duration-500 ease-in-out"
+        className="font-mono text-xs text-neutral-100 whitespace-pre-wrap px-4 pt-4 pb-4 relative transition-all duration-500 ease-in-out"
         style={{
           maxHeight: expanded ? EXPANDED_HEIGHT : COLLAPSED_HEIGHT,
           overflow: 'hidden',
@@ -56,11 +62,19 @@ const NewsPromptPreview: React.FC<NewsPromptPreviewProps> = ({ prompt }) => {
         {lines.map((line, i) => (
           <React.Fragment key={i}>{highlightVariables(line)}{i < lines.length - 1 && "\n"}</React.Fragment>
         ))}
-        {/* Gradiasi blur effect top & bottom when collapsed */}
+        {/* Meta info hanya tampil jika expanded */}
+        {expanded && (
+          <span
+            className="absolute right-6 bottom-4 text-[11px] text-muted-foreground opacity-80 font-normal bg-neutral-900/90 px-2 rounded"
+          >
+            {charCount} karakter &nbsp;·&nbsp; {lineCount} baris
+          </span>
+        )}
+        {/* Efek gradiasi atas bawah tanpa blur, transisi halus */}
         {!expanded && isCollapsible && (
           <>
-            <div className="absolute left-0 right-0 top-0 h-6 bg-gradient-to-b from-neutral-900/90 via-neutral-900/60 to-transparent pointer-events-none transition-all duration-500" />
-            <div className="absolute left-0 right-0 bottom-0 h-8 bg-gradient-to-t from-neutral-900/90 via-neutral-900/60 to-transparent pointer-events-none transition-all duration-500" />
+            <div className="absolute left-0 right-0 top-0 h-8 bg-gradient-to-b from-neutral-900/90 to-transparent pointer-events-none transition-opacity duration-500 opacity-80" />
+            <div className="absolute left-0 right-0 bottom-0 h-12 bg-gradient-to-t from-neutral-900/90 to-transparent pointer-events-none transition-opacity duration-500 opacity-80" />
           </>
         )}
       </pre>

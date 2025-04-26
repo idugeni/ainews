@@ -67,6 +67,7 @@ export function TitleForm({
   return (
     <Card className="space-y-6 relative p-6">
       <div className="flex justify-end mb-4">
+        {/* Tombol close (X) dihapus, hanya tombol Riwayat yang tersisa */}
         <Button
           type="button"
           variant="secondary"
@@ -128,7 +129,8 @@ export function TitleForm({
             </AlertDescription>
           </Alert>
         )}
-        <TitlePromptPreview prompt={promptPreview || ""} />
+        {/* Preview hanya tampil jika topic sudah diisi */}
+        {topic.trim() && <TitlePromptPreview prompt={promptPreview || ""} />}
       </form>
     </Card>
   );
@@ -204,17 +206,7 @@ export function TitleGenerator() {
             className="bg-card rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto relative p-4 border border-border"
             onClick={e => e.stopPropagation()}
           >
-            {/* Tombol close di kanan atas, tidak overlap tombol lain */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-2 top-2"
-              onClick={() => setShowHistory(false)}
-              aria-label="Tutup riwayat"
-            >
-              ✕
-            </Button>
-            <HistoryList showDeleteAtBottom />
+            <HistoryList />
           </div>
         </div>
       )}

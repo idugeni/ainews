@@ -1,16 +1,15 @@
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
 import { useState } from "react"
-import { buildTitlePrompt } from "@/lib/titles/titlePromptBuilder"
+import { buildTitlePrompt } from "@/lib/prompt/titlePromptBuilder"
 import { TitleCard } from "@/components/title/TitleCard"
 import { FiCopy, FiFileText, FiDownload } from "react-icons/fi"
 
 interface TitleResultListProps {
   titles: string[]
   onUse: (title: string) => void
-  topic?: string
   categoryPrompt?: string
-  count?: number
+  modelName?: string
 }
 
 function exportTitlesToTxt(titles: string[]) {
@@ -84,10 +83,9 @@ export function PromptViewer({ topic, categoryPrompt, count }: { topic: string; 
   )
 }
 
-export function TitleResultList({ titles, onUse, topic, categoryPrompt, count }: TitleResultListProps) {
+export function TitleResultList({ titles, onUse, categoryPrompt, modelName }: TitleResultListProps) {
   return (
     <div className="space-y-4 animate-fade-in">
-      <PromptViewer topic={topic || ''} categoryPrompt={categoryPrompt || ''} count={count} />
       <div className="flex flex-wrap gap-2 justify-end mb-4">
         <Button
           variant="secondary"
@@ -110,22 +108,28 @@ export function TitleResultList({ titles, onUse, topic, categoryPrompt, count }:
         <Button
           variant="default"
           size="sm"
-          className="text-xs px-3 py-1 rounded font-semibold border border-blue-600 bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1"
+          className="text-xs px-3 py-1 rounded font-semibold flex items-center gap-1"
           onClick={() => exportTitlesToCsv(titles)}
         >
           <FiDownload className="mr-1 w-4 h-4" />
           Export CSV
         </Button>
       </div>
-      <div className="grid gap-4 grid-cols-1">
+      <div className="hidden md:grid grid-cols-[40px_1fr_170px] gap-2 px-4 py-2 bg-muted rounded-t-xl font-semibold text-xs text-muted-foreground uppercase tracking-wider border border-b-0 border-border">
+        <div>No</div>
+        <div>Judul & Info</div>
+        <div className="text-right">Aksi</div>
+      </div>
+      <div className="flex flex-col">
         {titles.map((title, idx) => (
           <TitleCard
             key={idx}
             title={title}
             index={idx}
             categoryName={categoryPrompt || ''}
-            modelName={''}
+            modelName={modelName || ''}
             onUse={onUse}
+            tableLike
           />
         ))}
       </div>

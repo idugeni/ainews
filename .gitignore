@@ -17,6 +17,12 @@
 /.next/
 /out/
 
+#Trae
+.trae
+
+# VSCode
+.vscode
+
 # turbo
 .turbo
 
@@ -45,3 +51,6 @@ next-env.d.ts
 
 mkcert
 certificates
+
+# Rules
+.windsurfrules

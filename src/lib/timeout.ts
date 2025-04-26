@@ -52,4 +52,4 @@ export async function withRetry<T>(
   throw lastError
 }
 
-export const DEFAULT_TIMEOUT_MS = 60000 // 60 seconds
+export const DEFAULT_TIMEOUT_MS = 90000 // 90 seconds

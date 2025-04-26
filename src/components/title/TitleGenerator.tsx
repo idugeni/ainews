@@ -10,8 +10,7 @@ import { saveToHistory } from "@/lib/storage";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "sonner";
 import { HistoryList } from "@/components/history/HistoryList";
-import { buildTitlePrompt } from "@/lib/titles/titlePromptBuilder";
-import { FiX } from "react-icons/fi";
+import { buildTitlePrompt } from "@/lib/prompt/titlePromptBuilder";
 
 export default function TitleGenerator() {
   const [topic, setTopic] = useState("");
@@ -86,24 +85,15 @@ export default function TitleGenerator() {
           <TitleResultList
             titles={generatedTitles}
             onUse={handleUseTitle}
-            topic={topic}
             categoryPrompt={selectedCategory.name}
-            count={count}
+            modelName={selectedModel.name}
           />
         </div>
       )}
       {showHistory && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" role="dialog" onClick={() => setShowHistory(false)}>
           <div className="bg-card rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto relative p-4 border border-border" onClick={e => e.stopPropagation()}>
-            <button
-              type="button"
-              className="absolute right-2 top-2 text-xl text-muted-foreground hover:text-primary"
-              onClick={() => setShowHistory(false)}
-              aria-label="Tutup riwayat"
-            >
-              <FiX className="w-6 h-6" />
-            </button>
-            <HistoryList showDeleteAtBottom />
+            <HistoryList />
           </div>
         </div>
       )}

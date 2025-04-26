@@ -3,7 +3,7 @@ import { type NextRequest } from "next/server"
 import type { TitleGenerationRequest } from "@/types"
 import { NEWS_CATEGORIES } from "@/config/Categories"
 import { GEMINI_DEFAULT_CONFIG } from "@/config/titles/GeminiConfig"
-import { buildTitlePrompt } from "@/lib/titles/titlePromptBuilder"
+import { buildTitlePrompt } from "@/lib/prompt/titlePromptBuilder"
 import { withRetry, DEFAULT_TIMEOUT_MS, withTimeout } from "@/lib/timeout"
 
 export async function POST(req: NextRequest) {
