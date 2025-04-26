@@ -1,4 +1,4 @@
-import type { ApiResponse, GeminiModel, NewsGenerationRequest, TitleGenerationRequest } from "@/types"
+import type { ApiResponse, GeminiModel, NewsGenerationRequest, TitleGenerationRequest, NewsStyle, NewsAudience, NewsTone } from "@/types"
 
 export async function generateTitles(
   topic: string,
@@ -39,6 +39,9 @@ export async function generateNews(
   title: string,
   model: GeminiModel,
   category?: string,
+  style?: NewsStyle,
+  audience?: NewsAudience,
+  tone?: NewsTone,
 ): Promise<ApiResponse<{ result: string }>> {
   try {
     const response = await fetch("/api/generate-news", {
@@ -46,7 +49,7 @@ export async function generateNews(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ title, model, category } as NewsGenerationRequest),
+      body: JSON.stringify({ title, model, category, style, audience, tone } as NewsGenerationRequest),
     })
 
     if (!response.ok) {

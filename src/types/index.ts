@@ -20,6 +20,45 @@ export interface NewsCategory {
   prompt: string;
 }
 
+// Gaya, Audiens, Tone
+export type NewsStyle =
+  | "Lugas (Straight News)"
+  | "Mendalam/Interpretatif"
+  | "Naratif"
+  | "Deskriptif"
+  | "Ekspositori (Informatif/Tutorial)"
+  | "Persuasif"
+  | "Opini/Personal"
+  | "Investigasi"
+  | "Kasual/Percakapan"
+  | "Ulasan (Review)"
+
+export type NewsAudience =
+  | "Umum"
+  | "Bisnis/Ekonomi"
+  | "Olahraga"
+  | "Hiburan"
+  | "Teknologi"
+  | "Politik"
+  | "Kesehatan"
+  | "Anak-anak/Remaja"
+  | "Dewasa/Lansia"
+  | "Lokal"
+  | "Regional"
+  | "Nasional"
+  | "Internasional"
+  | "Pasif (Konsumen)"
+  | "Aktif (Partisipan)"
+
+export type NewsTone =
+  | "Netral/Objektif"
+  | "Formal"
+  | "Serius"
+  | "Informatif"
+  | "Kritis"
+  | "Positif"
+  | "Negatif"
+
 // API response types
 export interface ApiResponse<T> {
   success: boolean
@@ -44,6 +83,9 @@ export interface NewsGenerationRequest {
   title: string
   model: GeminiModel
   category?: string
+  style?: NewsStyle
+  audience?: NewsAudience
+  tone?: NewsTone
 }
 
 // Theme types

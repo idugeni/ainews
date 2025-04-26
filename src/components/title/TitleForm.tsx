@@ -18,6 +18,7 @@ import { TitleResultList } from "@/components/title/TitleResultList"
 import { HistoryList } from "@/components/history/history-list"
 import { FiLoader } from "react-icons/fi"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+import { Card } from "@/components/ui/card"
 
 interface TitleFormProps {
   topic: string;
@@ -31,6 +32,7 @@ interface TitleFormProps {
   isGenerating: boolean;
   onSubmitAction: () => void;
   onShowHistoryAction: () => void;
+  promptPreview?: string;
 }
 
 export function TitleForm({
@@ -44,19 +46,28 @@ export function TitleForm({
   setSelectedCategoryAction,
   isGenerating,
   onSubmitAction,
-  onShowHistoryAction
+  onShowHistoryAction,
+  promptPreview
 }: TitleFormProps) {
   return (
-    <div className="space-y-6 relative">
-      <div className="flex justify-end mb-2">
+    <Card className="space-y-6 relative p-6">
+      <div className="flex justify-end mb-4">
         <Button
+          type="button"
           variant="secondary"
           size="sm"
+          className="mt-2 md:mt-0"
           onClick={onShowHistoryAction}
           disabled={isGenerating}
         >
           Riwayat
         </Button>
+      </div>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold mb-2">Generate News Titles</h1>
+        <p className="text-muted-foreground mb-0">
+          Masukkan topik berita, pilih kategori dan model AI, lalu dapatkan beberapa opsi judul berita yang menarik dan siap pakai.
+        </p>
       </div>
       <form
         onSubmit={e => {
@@ -66,69 +77,86 @@ export function TitleForm({
         className="space-y-4"
       >
         {/* Topik */}
-        <label htmlFor="topic" className="block text-sm font-semibold mb-1 text-primary">Topik Berita <span className="text-destructive">*</span></label>
-        <Input
-          id="topic"
-          type="text"
-          value={topic}
-          onChange={e => setTopicAction(e.target.value)}
-          placeholder="Contoh: Teknologi AI di Indonesia, Ekonomi Syariah, Startup Kesehatan Digital, dll."
-          disabled={isGenerating}
-          className="mb-1"
-          autoFocus
-        />
+        <div className="mb-4">
+          <label htmlFor="topic" className="text-sm font-medium">Topik Berita <span className="text-red-600">*</span></label>
+          <Input
+            id="topic"
+            type="text"
+            value={topic}
+            onChange={e => setTopicAction(e.target.value)}
+            placeholder="Contoh: Teknologi AI di Indonesia, Ekonomi Syariah, Startup Kesehatan Digital, dll."
+            disabled={isGenerating}
+            className="mb-1"
+            autoFocus
+          />
+          {/* Error topik jika ada (tambahkan jika validasi ada) */}
+        </div>
         <p className="text-xs text-muted-foreground mb-2">Tulis topik utama yang ingin dijadikan judul berita. Semakin spesifik, hasil judul akan semakin relevan.</p>
 
         {/* Jumlah Judul */}
-        <label htmlFor="count-select" className="block text-sm font-semibold mb-1 text-primary">Jumlah Judul</label>
-        <Select
-          value={String(count)}
-          onValueChange={v => setCountAction(Number(v))}
-          disabled={isGenerating}
-        >
-          <SelectTrigger id="count-select" className="w-full">
-            <SelectValue placeholder="Pilih jumlah judul" />
-          </SelectTrigger>
-          <SelectContent>
-            {[3,4,5,6,7,8,9,10].map(val => (
-              <SelectItem key={val} value={String(val)}>{val}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="mb-4">
+          <label htmlFor="count-select" className="text-sm font-medium">Jumlah Judul</label>
+          <Select
+            value={String(count)}
+            onValueChange={v => setCountAction(Number(v))}
+            disabled={isGenerating}
+          >
+            <SelectTrigger id="count-select" className="w-full">
+              <SelectValue placeholder="Pilih jumlah judul" />
+            </SelectTrigger>
+            <SelectContent>
+              {[3,4,5,6,7,8,9,10].map(val => (
+                <SelectItem key={val} value={String(val)}>{val}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
         <p className="text-xs text-muted-foreground mb-2">Pilih berapa banyak alternatif judul berita yang ingin dihasilkan.</p>
 
         {/* Model AI */}
-        <label htmlFor="model-selector" className="block text-sm font-semibold mb-1 text-primary">Model AI</label>
-        <ModelSelector
-          selectedModel={selectedModel || DEFAULT_MODEL}
-          onModelChangeAction={setSelectedModelAction}
-          disabled={isGenerating}
-        />
+        <div className="mb-4">
+          <label htmlFor="model-selector" className="text-sm font-medium">Model AI</label>
+          <ModelSelector
+            selectedModel={selectedModel || DEFAULT_MODEL}
+            onModelChangeAction={setSelectedModelAction}
+            disabled={isGenerating}
+          />
+        </div>
         <p className="text-xs text-muted-foreground mb-2">Pilih model AI yang digunakan untuk menghasilkan judul. Model berbeda bisa memberi variasi gaya penulisan.</p>
 
         {/* Kategori */}
-        <label htmlFor="category-selector" className="block text-sm font-semibold mb-1 text-primary">Kategori Berita</label>
-        <CategorySelector
-          selectedCategory={selectedCategory || DEFAULT_CATEGORY}
-          onCategoryChangeAction={setSelectedCategoryAction}
-          disabled={isGenerating}
-        />
-        <p className="text-xs text-muted-foreground mb-2">Kategori membantu AI memahami konteks dan gaya penulisan judul yang diharapkan.</p>
+        <div className="mb-4">
+          <label htmlFor="category-selector" className="text-sm font-medium">Kategori Berita</label>
+          <CategorySelector
+            selectedCategory={selectedCategory}
+            onCategoryChangeAction={setSelectedCategoryAction}
+            disabled={isGenerating}
+          />
+        </div>
+        <p className="text-xs text-muted-foreground mb-2">Pilih kategori berita agar judul yang dihasilkan lebih relevan.</p>
 
         <Button
           type="submit"
-          disabled={isGenerating || !(topic && topic.trim())}
+          disabled={isGenerating || !topic.trim()}
           className="w-full transition-all duration-200 hover:shadow-md"
+          aria-busy={isGenerating}
         >
           {isGenerating ? (
             <span className="flex items-center justify-center gap-2">
               <FiLoader className="animate-spin h-5 w-5 text-muted-foreground opacity-100" />
               Membuat Judul...
             </span>
-          ) : "Buat Judul Berita"}
+          ) : (
+            "Buat Judul"
+          )}
         </Button>
+        {promptPreview && (
+          <Card className="mt-4 px-4 py-3 text-xs font-mono whitespace-pre-wrap text-muted-foreground border border-border">
+            <span className="font-semibold text-primary">Preview Prompt ke AI:</span>\n{promptPreview}
+          </Card>
+        )}
       </form>
-    </div>
+    </Card>
   );
 }
 
@@ -228,6 +256,7 @@ export function TitleGenerator() {
         isGenerating={isGenerating}
         onSubmitAction={handleSubmit}
         onShowHistoryAction={() => setShowHistory(true)}
+        promptPreview={`Generate ${count} judul berita tentang "${topic}" dengan model "${selectedModel.name}" dan kategori "${selectedCategory.name}".`}
       />
       {(generatedTitles.length > 0) && (
         <div className="mt-8">

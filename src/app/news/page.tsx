@@ -3,23 +3,18 @@ import { ApiKeyWarning } from "@/components/api/ApiKeyWarning"
 
 export default function NewsPage() {
   return (
-    <div className="max-w-3xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-3">Generate News Content</h1>
-        <p className="text-muted-foreground">
-          Enter a title and our AI will generate complete news content following WordPress post format. The content will
-          be properly structured with headings, paragraphs, and quotes.
-        </p>
-      </div>
-
-      {/* API Key Warning */}
-      {!process.env.GEMINI_API_KEY && (
-        <div className="mb-8">
-          <ApiKeyWarning />
+    <div className="min-h-[80vh] flex items-center justify-center bg-background py-8 px-2">
+      <div className="w-full max-w-3xl mx-auto">
+        {/* API Key Warning */}
+        {!process.env.GEMINI_API_KEY && (
+          <div className="mb-8">
+            <ApiKeyWarning />
+          </div>
+        )}
+        <div className='w-full max-w-3xl mx-auto'>
+          <NewsGenerator />
         </div>
-      )}
-
-      <NewsGenerator />
+      </div>
     </div>
   )
 }

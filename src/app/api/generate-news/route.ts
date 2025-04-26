@@ -8,7 +8,7 @@ import { NEWS_CATEGORIES } from "@/config/categories"
 
 export async function POST(req: NextRequest) {
   try {
-    const { title, model, category } = (await req.json()) as NewsGenerationRequest
+    const { title, model, category, style, audience, tone } = (await req.json()) as NewsGenerationRequest
 
     if (!title) {
       return NextResponse.json({ error: "Title is required" }, { status: 400 })
@@ -25,7 +25,8 @@ export async function POST(req: NextRequest) {
       if (found) categoryName = found.name
     }
 
-    const promptText = buildNewsPrompt(title, categoryName)
+    // Gunakan builder prompt modular
+    const promptText = buildNewsPrompt(title, categoryName, style, audience, tone)
     const config = GEMINI_DEFAULT_CONFIG
     const contents = [
       {

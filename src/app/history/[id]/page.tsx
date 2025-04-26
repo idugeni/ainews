@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card"
 import { getHistoryItem } from "@/lib/storage"
 import { ArrowLeft, Loader2 } from "lucide-react"
 import { marked } from "marked"
-import { ExportOptions } from "@/components/news/NewExportOptions"
+import { ExportOptions } from "@/components/news/NewsExportOptions"
 import { WordPressPublish } from "@/components/wordpress/WordpressPublish"
 import { SeoAnalyzer } from "@/components/seo/SeoAnalyzer"
 

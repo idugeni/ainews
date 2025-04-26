@@ -10,7 +10,8 @@ import { saveToHistory } from "@/lib/storage";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "sonner";
 import { HistoryList } from "@/components/history/history-list";
-import { Button } from "@/components/ui/button";
+import { buildTitlePrompt } from "@/lib/titles/titlePromptBuilder";
+import { FiX } from "react-icons/fi";
 
 export default function TitleGenerator() {
   const [topic, setTopic] = useState("");
@@ -20,6 +21,13 @@ export default function TitleGenerator() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedTitles, setGeneratedTitles] = useState<string[]>([]);
   const [showHistory, setShowHistory] = useState(false);
+
+  // --- Prompt builder utama judul ---
+  const { prompt: titlePrompt } = buildTitlePrompt(
+    topic,
+    selectedCategory?.name || "-",
+    count
+  )
 
   const handleSubmit = async () => {
     if (!topic.trim()) return;
@@ -71,39 +79,30 @@ export default function TitleGenerator() {
         isGenerating={isGenerating}
         onSubmitAction={handleSubmit}
         onShowHistoryAction={() => setShowHistory(true)}
+        promptPreview={titlePrompt}
       />
-      {/* Hanya tampilkan hasil jika sudah ada judul yang dihasilkan */}
-      {generatedTitles.length > 0 && (
+      {(generatedTitles.length > 0) && (
         <div className="mt-8">
           <TitleResultList
             titles={generatedTitles}
             onUse={handleUseTitle}
             topic={topic}
-            categoryPrompt={selectedCategory?.name || ''}
+            categoryPrompt={selectedCategory.name}
             count={count}
           />
         </div>
       )}
       {showHistory && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 animate-fade-in"
-          onClick={() => setShowHistory(false)}
-          aria-modal="true"
-          role="dialog"
-        >
-          <div
-            className="bg-card rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto relative p-4 border border-border"
-            onClick={e => e.stopPropagation()}
-          >
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-2 top-2"
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" role="dialog" onClick={() => setShowHistory(false)}>
+          <div className="bg-card rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto relative p-4 border border-border" onClick={e => e.stopPropagation()}>
+            <button
+              type="button"
+              className="absolute right-2 top-2 text-xl text-muted-foreground hover:text-primary"
               onClick={() => setShowHistory(false)}
               aria-label="Tutup riwayat"
             >
-              ✕
-            </Button>
+              <FiX className="w-6 h-6" />
+            </button>
             <HistoryList showDeleteAtBottom />
           </div>
         </div>
